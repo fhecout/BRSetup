@@ -1,0 +1,65 @@
+unit Unit3;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs,registry, Vcl.StdCtrls;
+
+
+type
+  TForm3 = class(TForm)
+    Button1: TButton;
+    Edit1: TEdit;
+    Label1: TLabel;
+    procedure Button1Click(Sender: TObject);
+    procedure AlterarRegistro;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+
+var
+  Form3: TForm3;
+
+implementation
+
+
+{$R *.dfm}
+procedure TForm3.AlterarRegistro;
+var reg : TRegistry;
+DataAtual: string;
+begin
+
+  Reg := TRegistry.Create;
+  try
+    Reg.RootKey := HKEY_USERS;
+    if Reg.OpenKey('S-1-5-18\Control Panel\International', True) then
+    begin
+      //Reg.WriteString('ValorString', 'Gustavo'); // Cadeia de Caracteres
+      //Reg.WriteInteger('ValorDWORD', 2004);  // DWORD32
+      //Reg.WriteBool('ValorBooleano', False); // DWORD32
+      //DataAtual := DateToStr(Date); // Obter a data atual como string
+      //Reg.WriteString('ValorData', DataAtual); // Escrever a data no registro
+      Reg.WriteString('sShortDate','MM/dd/yyyy');   // Mudar Mes
+
+
+//      showmessage (edcaminho.text);
+      Reg.CloseKey;
+    end;
+  finally
+    Reg.Free;
+  end;
+  showmessage('concluido');
+  Edit1.Text
+end;
+
+procedure TForm3.Button1Click(Sender: TObject);
+begin
+  alterarRegistro;
+
+end;
+
+end.

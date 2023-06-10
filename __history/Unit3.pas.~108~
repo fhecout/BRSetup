@@ -1,0 +1,83 @@
+unit Unit3;
+
+interface
+
+uses
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs,registry, Vcl.StdCtrls;
+
+
+type
+  TForm3 = class(TForm)
+    Button1: TButton;
+    Edit1: TEdit;
+    Label1: TLabel;
+    procedure Button1Click(Sender: TObject);
+    procedure AlterarRegistro;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+
+var
+  Form3: TForm3;
+
+implementation
+
+
+{$R *.dfm}
+procedure TForm3.AlterarRegistro;
+var reg : TRegistry;
+DataAtual: string;
+subChaves: TStringList;
+teste: string;
+  I: Integer;
+begin
+  Reg := TRegistry.Create;
+  subChaves := TStringList.Create;
+  try
+    Reg.RootKey := HKEY_USERS;
+    if Reg.OpenKeyReadOnly('') then
+      begin
+      Reg.GetKeyNames(subChaves);
+      Reg.CloseKey;
+
+      for I := 0 to subChaves.Count - 1 do
+      begin
+        teste := subChaves[I];
+
+        if Reg.OpenKey(teste + '\Control Panel\International',false) then
+        begin
+          //Reg.WriteString('ValorString', 'Gustavo'); // Cadeia de Caracteres
+          //Reg.WriteInteger('ValorDWORD', 2004);  // DWORD32
+          //Reg.WriteBool('ValorBooleano', False); // DWORD32
+          //DataAtual := DateToStr(Date); // Obter a data atual como string
+          //Reg.WriteString('ValorData', DataAtual); // Escrever a data no registro
+
+
+          Reg.WriteString('sShortDate','MM/dd/yyyy');   // Mudar Mes
+
+          showmessage (teste);
+          Reg.CloseKey;
+          end;
+        end;
+      end;
+
+  finally
+    Reg.Free;
+    subChaves.Free;
+  end;
+  showmessage('concluido');
+  Edit1.Text
+end;
+
+
+procedure TForm3.Button1Click(Sender: TObject);
+begin
+  alterarRegistro;
+
+end;
+
+end.
